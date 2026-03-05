@@ -1,0 +1,32 @@
+﻿@model appWeb2.Models.VideoJuegos 
+
+<h2>Crear Videojuegos</h2>
+
+<form asp-action="Create" method="post">
+<div>
+   <label>Titulo</label>
+   <input asp-for="titulo" class="form-control" />
+   <span asp-validation-for="titulo"></span>
+</div>
+
+<div>
+   <label>Precio</label>
+   <input asp-for="precio" class="form-control" />
+   <div asp-validation-summary="All" class="text-danger"></div>
+   <span asp-validation-for="precio"></span>
+</div>
+
+<div>
+   <label>Categoría</label>
+   <input asp-for="categoria" class="form-control" />
+   <span asp-validation-for="categoria"></span>
+</div>
+
+<div>
+	<Label>Descripción</Label>
+	<textarea asp-for="descripcion" class="form-control"></textarea>
+</div><br />
+
+<button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+

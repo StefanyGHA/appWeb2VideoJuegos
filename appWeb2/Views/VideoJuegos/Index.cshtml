@@ -1,0 +1,33 @@
+﻿@model IEnumerable<appWeb2.Models.VideoJuegos>
+
+
+<h2>Lista de Videojuegos</h2>
+<a asp-action="Create" class="btn btn-primary">Nuevo Juego</a>
+<table class="table table-striped mt-3">
+	<thead>
+		<tr>
+			<th>Titulo</th>
+			<th>Descripcion</th>
+			<th>Categoria</th>
+			<th>Precio</th>
+			<th>Acciones</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		@foreach (var juego in Model)
+		{
+			<tr>
+				<td>@juego.titulo</td>
+				<td>@juego.precio</td>
+				<td>@juego.categoria</td>
+				<td>@juego.descripcion</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@juego.Id">Editar</a>
+					@* <a asp-action="Details" asp-route-id="@juego.Id">Ver</a> *@
+					<a asp-action="Delete" asp-route-id="@juego.Id">Eliminar</a>
+			</td>
+			</tr>
+		}
+		</tbody>
+</table>

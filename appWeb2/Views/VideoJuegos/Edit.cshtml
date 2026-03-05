@@ -1,0 +1,34 @@
+﻿@model appWeb2.Models.VideoJuegos
+
+<h2>Editar Videojuegos</h2><br />
+
+<form asp-action="Edit">
+	<input type="hidden" asp-for="Id" />
+
+	<div>
+		<label>Titulo</label>
+		<input asp-for="titulo" class="form-control" />
+		<span asp-validation-for="titulo"></span>
+	</div>
+
+	<div>
+		<label>Precio</label>
+		<input asp-for="precio" class="form-control" />
+		<span asp-validation-for="precio"></span>
+	</div>
+
+	<div>
+		<label>Categoría</label>
+		<input asp-for="categoria" class="form-control" />
+		<span asp-validation-for="categoria"></span>
+	</div>
+
+	<div>
+		<Label>Descripción</Label>
+		<textarea asp-for="descripcion" class="form-control"></textarea>
+	</div><br />
+
+	<button type="submit" class="btn btn-warning">Actualizar</button>
+</form>
+
+
