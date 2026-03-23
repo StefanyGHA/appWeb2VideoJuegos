@@ -20,6 +20,8 @@ namespace appWeb2.Models
 
 		public string descripcion { get; set; }
 
+		public string? imagen { get; set; }
+
 		//public ICollection<Compra> Compras { get; set; }
 
 	}

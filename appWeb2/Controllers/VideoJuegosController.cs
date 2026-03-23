@@ -29,16 +29,31 @@ namespace appWeb2.Controllers
 		[ValidateAntiForgeryToken]
 		[HttpPost]
 
-		public async Task<IActionResult> Create(VideoJuegos juego)
+		public async Task<IActionResult> Create(VideoJuegos juego, IFormFile archivoImagen)
 		{
 			if (!ModelState.IsValid)
 				return View(juego);
 
+			if (archivoImagen != null && archivoImagen.Length > 0)
+			{
+				var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(archivoImagen.FileName);
+
+				var ruta = Path.Combine(Directory.GetCurrentDirectory(),
+				"wwwroot/imagenes", nombreArchivo);
+
+				using (var stream = new FileStream(ruta, FileMode.Create))
+				{
+					await archivoImagen.CopyToAsync(stream);
+				}
+
+				juego.imagen = "/imagenes/" + nombreArchivo;
+			}
 			_context.VideoJuegos.Add(juego);
 			await _context.SaveChangesAsync();
 
 			return RedirectToAction(nameof(Index));
 		}
+		
 
 		public async Task<IActionResult> Edit(int? id)
 		{
@@ -48,37 +63,64 @@ namespace appWeb2.Controllers
 			if (juego == null) return NotFound();
 
 			return View(juego);
-
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 
-		public async Task<IActionResult> Edit(int id, VideoJuegos juego)
+		public async Task<IActionResult> Edit(int id, VideoJuegos juego, IFormFile? archivoImagen)
 		{
-			if (id != juego.Id) return NotFound();
+			if (id != juego.Id)
+				return NotFound();
+
+			var juegoDB = await _context.VideoJuegos.FindAsync(juego.Id);
+
+			if (juegoDB == null)
+				return NotFound();
 
 			if (ModelState.IsValid)
 			{
-				try
-				{
-					_context.Update(juego);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!_context.VideoJuegos.Any(e => e.Id == juego.Id))
-						return NotFound();
-					else
-						throw;
-				}
+				juegoDB.titulo = juego.titulo;
+				juegoDB.precio = juego.precio;
+				juegoDB.categoria = juego.categoria;
+				juegoDB.descripcion = juego.descripcion;
 
+				if (archivoImagen != null && archivoImagen.Length > 0)
+				{
+					if (!string.IsNullOrEmpty(juegoDB.imagen))
+					{
+						var rutaAnterior = Path.Combine(
+						Directory.GetCurrentDirectory(),
+						"wwwroot",
+						juegoDB.imagen.TrimStart('/')
+						);
+
+						if (System.IO.File.Exists(rutaAnterior))
+							System.IO.File.Delete(rutaAnterior);
+					}
+
+					var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(archivoImagen.FileName);
+
+					var rutaNueva = Path.Combine(
+						   Directory.GetCurrentDirectory(),
+						   "wwwroot/imagenes",
+						   nombreArchivo
+						   );
+
+					using (var stream = new FileStream(rutaNueva, FileMode.Create))
+					{
+						await archivoImagen.CopyToAsync(stream);
+
+					}
+					juegoDB.imagen = "/imagenes/" + nombreArchivo;
+				}
+				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
-
 			}
+			return View(juegoDB);
 
-			return View(juego);
 		}
+
 
 		public async Task<IActionResult> Delete(int? id)
 		{

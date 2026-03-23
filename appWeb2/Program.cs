@@ -12,6 +12,8 @@ option.UseSqlServer(
     )
  );
 
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +28,8 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapStaticAssets();
 
