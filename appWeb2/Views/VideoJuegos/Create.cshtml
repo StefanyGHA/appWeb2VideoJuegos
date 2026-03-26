@@ -1,37 +1,64 @@
 ﻿@model appWeb2.Models.VideoJuegos 
 
-<h2>Crear Videojuegos</h2>
+<h2 class="fw-bold mb-4" style="color: #FFD700;">Crear Videojuegos</h2>
 
 <form asp-action="Create" method="post" enctype="multipart/form-data">
-<div>
-   <label>Titulo</label>
-   <input asp-for="titulo" class="form-control" />
-   <span asp-validation-for="titulo"></span>
-</div>
 
-<div>
-   <label>Precio</label>
-   <input asp-for="precio" class="form-control" />
-   <div asp-validation-summary="All" class="text-danger"></div>
-   <span asp-validation-for="precio"></span>
-</div>
+    <div class="mb-3">
+        <label asp-for="titulo" class="form-label" style="color: #f5f5dc;">Título</label>
+        <input asp-for="titulo" class="form-control" />
+        <span asp-validation-for="titulo" class="text-danger"></span>
+    </div>
 
-<div>
-   <label>Categoría</label>
-   <input asp-for="categoria" class="form-control" />
-   <span asp-validation-for="categoria"></span>
-</div>
+    <div class="mb-3">
+        <label asp-for="precio" class="form-label" style="color: #f5f5dc;">Precio</label>
+        <input asp-for="precio" class="form-control" />
+        <span asp-validation-for="precio" class="text-danger"></span>
+    </div>
 
-<div>
-	<Label>Descripción</Label>
-	<textarea asp-for="descripcion" class="form-control"></textarea>
-</div><br />
+    <div class="mb-3">
+        <label asp-for="categoria" class="form-label" style="color: #f5f5dc;">Categoría</label>
+        <input asp-for="categoria" class="form-control" />
+        <span asp-validation-for="categoria" class="text-danger"></span>
+    </div>
 
-<div>
-	<label>Imagen</label>
-	<input type="file" name="archivoImagen" class="form-control" />
-</div>
+    <div class="mb-3">
+        <label asp-for="descripcion" class="form-label" style="color: #f5f5dc;">Descripción</label>
+        <textarea asp-for="descripcion" class="form-control"></textarea>
+        <span asp-validation-for="descripcion" class="text-danger"></span>
+    </div>
 
-<button type="submit" class="btn btn-primary">Guardar</button>
+    <div class="mb-3">
+        <label asp-for="EdadPermitida" class="form-label" style="color: #f5f5dc;">Clasificación de edad</label>
+        <select asp-for="EdadPermitida" class="form-control">
+            <option value="">Seleccione una edad</option>
+            <option value="3">+3</option>
+            <option value="7">+7</option>
+            <option value="12">+12</option>
+            <option value="16">+16</option>
+            <option value="18">+18</option>
+        </select>
+        <span asp-validation-for="EdadPermitida" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3 form-check">
+        <input asp-for="TienePromocion" class="form-check-input" />
+        <label asp-for="TienePromocion" class="form-check-label" style="color: #f5f5dc;">¿Tiene promoción?</label>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PrecioAnterior" class="form-label" style="color: #f5f5dc;">Precio anterior</label>
+        <input asp-for="PrecioAnterior" class="form-control" />
+        <span asp-validation-for="PrecioAnterior" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" style="color: #f5f5dc;">Imagen</label>
+        <input type="file" name="archivoImagen" class="form-control" />
+    </div>
+
+    <div asp-validation-summary="All" class="text-danger mb-3"></div> <br />
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 

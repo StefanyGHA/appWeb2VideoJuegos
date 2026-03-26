@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace appWeb2.Migrations
 {
     /// <inheritdoc />
-    public partial class migracion1 : Migration
+    public partial class AgregarPromocionYEdad : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ namespace appWeb2.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    password = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -36,7 +37,12 @@ namespace appWeb2.Migrations
                     titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    imagen = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TienePromocion = table.Column<bool>(type: "bit", nullable: false),
+                    PrecioAnterior = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    EdadPermitida = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

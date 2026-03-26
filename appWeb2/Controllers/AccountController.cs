@@ -1,4 +1,6 @@
-﻿using appWeb2.Data;
+﻿using System.Security.Cryptography;
+using System.Text;
+using appWeb2.Data;
 using appWeb2.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,17 +20,28 @@ namespace appWeb2.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 
 		public IActionResult Login(Login model)
 		{
-		    var user = _context.Usuarios
-			.FirstOrDefault(u => u.correo == model.correo && u.password == model.password);
+			var user = _context.Usuarios
+			.FirstOrDefault(u => u.correo == model.correo);
 
-			if (user == null) 
+			if (user != null)
 			{
-			  HttpContext.Session.SetString("usuario", user.nombre);
-			  Console.WriteLine("Usuario logueado: " + user.nombre);
-				return RedirectToAction("Index", "Home");
+			 string saltedPassword = user.salt + model.password;
+
+			 using (SHA256 sha256 = SHA256.Create()) 
+			 {
+			  byte[] inputBytes = Encoding.UTF8.GetBytes(saltedPassword);
+			  byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+			  if (hashBytes.SequenceEqual(user.password))
+			  {
+						HttpContext.Session.SetString("usuario", user.nombre);
+						return RedirectToAction("Index", "Home");
+			  }
+			 }
 			}
 
 			ViewBag.Error = "Credenciales incorrectas";
@@ -38,7 +51,7 @@ namespace appWeb2.Controllers
 		public IActionResult Logout()
 		{
 		 HttpContext.Session.Clear();
-			return RedirectToAction("Login");
+			return RedirectToAction("Home");
 		}
 	}
 }

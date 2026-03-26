@@ -1,33 +1,86 @@
 ﻿@model IEnumerable<appWeb2.Models.VideoJuegos>
 
+@{
+    ViewData["Title"] = "Videojuegos";
+}
 
-<h2>Lista de Videojuegos</h2>
-<a asp-action="Create" class="btn btn-primary">Nuevo Juego</a>
-<table class="table table-striped mt-3">
-	<thead>
-		<tr>
-			<th>Titulo</th>
-			<th>Descripcion</th>
-			<th>Categoria</th>
-			<th>Precio</th>
-			<th>Acciones</th>
-		</tr>
-	</thead>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" mb-4" style="color: #FFD700;">Lista de Videojuegos</h2>
+        <a asp-action="Create" class="btn btn-primary">Nuevo Videojuego</a>
+    </div>
 
-	<tbody>
-		@foreach (var juego in Model)
-		{
-			<tr>
-				<td>@juego.titulo</td>
-				<td>@juego.precio</td>
-				<td>@juego.categoria</td>
-				<td>@juego.descripcion</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@juego.Id">Editar</a>
-					@* <a asp-action="Details" asp-route-id="@juego.Id">Ver</a> *@
-					<a asp-action="Delete" asp-route-id="@juego.Id">Eliminar</a>
-			</td>
-			</tr>
-		}
-		</tbody>
-</table>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Imagen</th>
+                    <th>Título</th>
+                    <th>Precio</th>
+                    <th>Categoría</th>
+                    <th>Edad</th>
+                    <th>Fecha de ingreso</th>
+                    <th>Promoción</th>
+                    <th>Precio anterior</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var juego in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @if (!string.IsNullOrEmpty(juego.imagen))
+                            {
+                                <img src="@juego.imagen" alt="@juego.titulo" width="90" class="img-thumbnail" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">Sin imagen</span>
+                            }
+                        </td>
+
+                        <td>@juego.titulo</td>
+
+                        <td>$@juego.precio</td>
+
+                        <td>@juego.categoria</td>
+
+                        <td>
+                            <span class="badge bg-secondary">+@juego.EdadPermitida</span>
+                        </td>
+
+                        <td>@juego.FechaRegistro.ToString("dd/MM/yyyy")</td>
+
+                        <td>
+                            @if (juego.TienePromocion)
+                            {
+                                <span class="badge bg-danger">Sí</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">No</span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (juego.PrecioAnterior.HasValue)
+                            {
+                                <span>$@juego.PrecioAnterior</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@juego.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <a asp-action="Delete" asp-route-id="@juego.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

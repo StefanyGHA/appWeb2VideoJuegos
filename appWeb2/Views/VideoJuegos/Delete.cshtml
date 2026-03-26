@@ -1,16 +1,56 @@
 ﻿@model appWeb2.Models.VideoJuegos
 
-<h2>Eliminar Videojuego</h2>
+<h2 class="fw-bold mb-4" style="color: #FFD700;">Eliminar Videojuego</h2>
+<br />
 
-<h4>¿Estas seguro que deseas eliminar esto?</h4>
-
-<div>
-	<stong>@Model.titulo</stong> - $@Model.precio
+<div class="alert alert-danger">
+    ¿Estás seguro de que deseas eliminar este videojuego?
 </div>
 
-<form asp-action="Delete">
-	<input type="hidden" asp-for="Id" />
-	<button type="submit" class="btn btn-danger">Eliminar</button>
-	<a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+<div class="card p-4 shadow-sm">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            @if (!string.IsNullOrEmpty(Model.imagen))
+            {
+                <img src="@Model.imagen" class="img-fluid rounded" style="max-height: 250px;" />
+            }
+            else
+            {
+                <p class="text-muted">No hay imagen</p>
+            }
+        </div>
 
+        <div class="col-md-8">
+            <h4>@Model.titulo</h4>
+            <hr />
+
+            <p><strong>Precio:</strong> $@Model.precio</p>
+            <p><strong>Categoría:</strong> @Model.categoria</p>
+            <p><strong>Descripción:</strong> @Model.descripcion</p>
+            <p><strong>Clasificación:</strong> +@Model.EdadPermitida</p>
+            <p><strong>Fecha de ingreso:</strong> @Model.FechaRegistro.ToString("dd/MM/yyyy")</p>
+
+            @if (Model.TienePromocion)
+            {
+                <p><strong>Promoción:</strong> Sí</p>
+
+                @if (Model.PrecioAnterior.HasValue)
+                {
+                    <p><strong>Precio anterior:</strong> $@Model.PrecioAnterior</p>
+                }
+            }
+            else
+            {
+                <p><strong>Promoción:</strong> No</p>
+            }
+        </div>
+    </div>
+</div>
+
+<br />
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

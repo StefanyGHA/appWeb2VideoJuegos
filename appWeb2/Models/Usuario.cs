@@ -17,7 +17,9 @@ namespace appWeb2.Models
 
 		[Required]
 
-		public string password { get; set; }
+		public byte[] password { get; set; }
+
+		public string salt { get; set; }
 
 		[Required]
 

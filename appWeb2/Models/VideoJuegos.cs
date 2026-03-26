@@ -22,6 +22,14 @@ namespace appWeb2.Models
 
 		public string? imagen { get; set; }
 
+		public DateTime FechaRegistro { get; set; } = DateTime.Now;
+
+		public bool TienePromocion { get; set; }
+
+		public decimal? PrecioAnterior { get; set; }
+
+		public int EdadPermitida { get; set; }
+
 		//public ICollection<Compra> Compras { get; set; }
 
 	}

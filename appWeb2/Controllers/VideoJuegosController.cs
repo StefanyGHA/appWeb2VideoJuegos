@@ -24,10 +24,34 @@ namespace appWeb2.Controllers
 		{
 			return View();
 		}
+		public IActionResult Categorias()
+		{
+			var juegos = _context.VideoJuegos.ToList();
+			return View(juegos);
+		}
+
+		public IActionResult Nuevos()
+		{
+			var nuevosJuegos = _context.VideoJuegos
+				.OrderByDescending(v => v.FechaRegistro)
+				.Take(15)
+				.ToList();
+
+			return View(nuevosJuegos);
+		}
+
+		public IActionResult Promociones()
+		{
+			var juegosEnPromocion = _context.VideoJuegos
+				.Where(v => v.TienePromocion)
+				.OrderByDescending(v => v.FechaRegistro)
+				.ToList();
+
+			return View(juegosEnPromocion);
+		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[HttpPost]
 
 		public async Task<IActionResult> Create(VideoJuegos juego, IFormFile archivoImagen)
 		{
@@ -48,6 +72,9 @@ namespace appWeb2.Controllers
 
 				juego.imagen = "/imagenes/" + nombreArchivo;
 			}
+
+			juego.FechaRegistro = DateTime.Now;
+
 			_context.VideoJuegos.Add(juego);
 			await _context.SaveChangesAsync();
 
@@ -68,6 +95,8 @@ namespace appWeb2.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 
+
+
 		public async Task<IActionResult> Edit(int id, VideoJuegos juego, IFormFile? archivoImagen)
 		{
 			if (id != juego.Id)
@@ -84,15 +113,18 @@ namespace appWeb2.Controllers
 				juegoDB.precio = juego.precio;
 				juegoDB.categoria = juego.categoria;
 				juegoDB.descripcion = juego.descripcion;
+				juegoDB.EdadPermitida = juego.EdadPermitida;
+				juegoDB.TienePromocion = juego.TienePromocion;
+				juegoDB.PrecioAnterior = juego.PrecioAnterior;
 
 				if (archivoImagen != null && archivoImagen.Length > 0)
 				{
 					if (!string.IsNullOrEmpty(juegoDB.imagen))
 					{
 						var rutaAnterior = Path.Combine(
-						Directory.GetCurrentDirectory(),
-						"wwwroot",
-						juegoDB.imagen.TrimStart('/')
+							Directory.GetCurrentDirectory(),
+							"wwwroot",
+							juegoDB.imagen.TrimStart('/')
 						);
 
 						if (System.IO.File.Exists(rutaAnterior))
@@ -102,26 +134,27 @@ namespace appWeb2.Controllers
 					var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(archivoImagen.FileName);
 
 					var rutaNueva = Path.Combine(
-						   Directory.GetCurrentDirectory(),
-						   "wwwroot/imagenes",
-						   nombreArchivo
-						   );
+						Directory.GetCurrentDirectory(),
+						"wwwroot",
+						"imagenes",
+						nombreArchivo
+					);
 
 					using (var stream = new FileStream(rutaNueva, FileMode.Create))
 					{
 						await archivoImagen.CopyToAsync(stream);
-
 					}
+
 					juegoDB.imagen = "/imagenes/" + nombreArchivo;
 				}
+
+				_context.Update(juegoDB);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
+
 			return View(juegoDB);
-
 		}
-
-
 		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null) return NotFound();
@@ -150,5 +183,6 @@ namespace appWeb2.Controllers
 
 			return RedirectToAction(nameof(Index));
 		}
+
 	}
 }

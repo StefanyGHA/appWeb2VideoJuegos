@@ -8,11 +8,13 @@
 
         <!-- CATEGORÍAS -->
         <div class="col-md-3 mb-3">
-            <div class="feature-card">
-                <i class="fas fa-gamepad"></i>
-                <h5>Categorías</h5>
-                <p>Explora por tipo de juego</p>
-            </div>
+            <a asp-controller="VideoJuegos" asp-action="Categorias" class="text-decoration-none">
+                <div class="feature-card">
+                    <i class="fas fa-gamepad"></i>
+                    <h5>Categorías</h5>
+                    <p>Explora por tipo de juego</p>
+                </div>
+            </a>
         </div>
 
         <!-- MÁS VENDIDOS -->
@@ -26,20 +28,24 @@
 
         <!-- NUEVOS -->
         <div class="col-md-3 mb-3">
-            <div class="feature-card">
-                <i class="fas fa-star"></i>
-                <h5>Nuevos Juegos</h5>
-                <p>Lo último en la tienda</p>
-            </div>
+            <a asp-controller="VideoJuegos" asp-action="Nuevos" class="text-decoration-none">
+                <div class="feature-card">
+                    <i class="fas fa-star"></i>
+                    <h5>Nuevos Juegos</h5>
+                    <p>Lo último en la tienda</p>
+                </div>
+            </a>
         </div>
 
         <!-- PROMOCIONES -->
         <div class="col-md-3 mb-3">
+       <a asp-controller="VideoJuegos" asp-action="Promociones" class="text-decoration-none">
             <div class="feature-card">
                 <i class="fas fa-tags"></i>
                 <h5>Promociones</h5>
                 <p>Ofertas especiales</p>
             </div>
+       </a>
         </div>
 
     </div>
@@ -53,7 +59,7 @@
                 <div class="card game-card h-100">
 
                     <!-- 🔴 BADGE SUPERIOR -->
-                    <div class="badge-top">+12</div>
+                    <div class="badge-top">+@juego.EdadPermitida</div>
 
                     <!-- ❤️ FAVORITO -->
                     <div class="favorite">

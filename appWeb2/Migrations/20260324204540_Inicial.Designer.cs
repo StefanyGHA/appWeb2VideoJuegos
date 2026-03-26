@@ -12,8 +12,8 @@ using appWeb2.Data;
 namespace appWeb2.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260217181404_migracion1")]
-    partial class migracion1
+    [Migration("20260324204540_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,7 +70,11 @@ namespace appWeb2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("password")
+                    b.Property<byte[]>("password")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("salt")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -87,12 +91,27 @@ namespace appWeb2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("EdadPermitida")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("PrecioAnterior")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("TienePromocion")
+                        .HasColumnType("bit");
+
                     b.Property<string>("categoria")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("descripcion")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("imagen")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("precio")
@@ -116,7 +135,7 @@ namespace appWeb2.Migrations
                         .IsRequired();
 
                     b.HasOne("appWeb2.Models.VideoJuegos", "VideoJuegos")
-                        .WithMany("Compras")
+                        .WithMany()
                         .HasForeignKey("VideoJuegosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -124,11 +143,6 @@ namespace appWeb2.Migrations
                     b.Navigation("Usuario");
 
                     b.Navigation("VideoJuegos");
-                });
-
-            modelBuilder.Entity("appWeb2.Models.VideoJuegos", b =>
-                {
-                    b.Navigation("Compras");
                 });
 #pragma warning restore 612, 618
         }
