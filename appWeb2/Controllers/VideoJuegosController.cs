@@ -26,7 +26,21 @@ namespace appWeb2.Controllers
 		}
 		public IActionResult Categorias()
 		{
-			var juegos = _context.VideoJuegos.ToList();
+			var categorias = _context.VideoJuegos
+				.Select(v => v.categoria)
+				.Distinct()
+				.ToList();
+
+			return View(categorias);
+		}
+
+		public IActionResult PorCategoria(string categoria)
+		{
+			var juegos = _context.VideoJuegos
+				.Where(v => v.categoria == categoria)
+				.ToList();
+
+			ViewBag.Categoria = categoria;
 			return View(juegos);
 		}
 

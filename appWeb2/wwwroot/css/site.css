@@ -133,3 +133,14 @@ body {
         box-shadow: 0px 0px 15px #d55829;
         background-color: #00416c;
     }
+
+.category-card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
