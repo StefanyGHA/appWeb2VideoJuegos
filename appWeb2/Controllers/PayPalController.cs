@@ -1,4 +1,6 @@
-﻿using appWeb2.Services;
+﻿using appWeb2.Data;
+using appWeb2.Models;
+using appWeb2.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace appWeb2.Controllers
@@ -6,10 +8,12 @@ namespace appWeb2.Controllers
 	public class PayPalController : Controller
 	{
 		private readonly PayPalService _payPalService;
+		private readonly AppDbContext _context;
 
-		public PayPalController(PayPalService payPalService)
+		public PayPalController(PayPalService payPalService, AppDbContext context)
 		{
 			_payPalService = payPalService;
+			_context = context;
 		}
 
 		public async Task<IActionResult> TestToken()
@@ -40,9 +44,35 @@ namespace appWeb2.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CaptureOrder(string orderId)
+		public async Task<IActionResult> CaptureOrder(string orderId, int videojuegoId, int cantidad, decimal total)
 		{
 			var result = await _payPalService.CaptureOrderAsync(orderId);
+
+			// 1. Crear compra
+			var compra = new Compra
+			{
+				FechaCompra = DateTime.Now,
+				UsuarioId = 1
+			};
+
+			_context.Compras.Add(compra);
+			await _context.SaveChangesAsync();
+
+			// 2. Crear detalle
+			var detalle = new DetalleCompra
+			{
+				VideoJuegosId = videojuegoId,
+				cantidad = cantidad,
+				total = total,
+				estadoCompra = "COMPLETADO",
+				fechaHoraTransaccion = DateTime.Now,
+				codigoTransaccion = orderId,
+				idCompra = compra.Id
+			};
+
+			_context.detalle_compra.Add(detalle);
+			await _context.SaveChangesAsync();
+
 			return Content(result, "application/json");
 		}
 

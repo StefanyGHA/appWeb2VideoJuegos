@@ -124,7 +124,7 @@
                 headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: 'orderId=' + data.orderID
+                body: 'orderId=' + data.orderID + '&videojuegoId=@item.Id&cantidad=1&total=@item.precio'
                 });
 
                 const result = await response.text();
