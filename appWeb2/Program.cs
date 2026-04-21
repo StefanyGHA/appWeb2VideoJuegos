@@ -1,7 +1,12 @@
 using appWeb2.Data;
 using Microsoft.EntityFrameworkCore;
+using appWeb2.Data;
+using appWeb2.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.Configure<PayPalSettings>(
+	builder.Configuration.GetSection("PayPal"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -37,6 +42,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+
 
 
 app.Run();
