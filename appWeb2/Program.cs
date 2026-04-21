@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using appWeb2.Data;
 using appWeb2.Models;
 using Microsoft.EntityFrameworkCore;
+using appWeb2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<PayPalSettings>(
@@ -18,7 +19,7 @@ option.UseSqlServer(
  );
 
 builder.Services.AddSession();
-
+builder.Services.AddHttpClient<PayPalService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
