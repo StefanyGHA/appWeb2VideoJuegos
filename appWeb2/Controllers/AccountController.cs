@@ -198,6 +198,7 @@ namespace appWeb2.Controllers
 			  if (hashBytes.SequenceEqual(user.password))
 			  {
 						HttpContext.Session.SetString("usuario", user.nombre);
+						HttpContext.Session.SetInt32("usuarioId", user.Id);
 						return RedirectToAction("Index", "Home");
 			  }
 			 }
@@ -209,8 +210,8 @@ namespace appWeb2.Controllers
 
 		public IActionResult Logout()
 		{
-		 HttpContext.Session.Clear();
-			return RedirectToAction("Home");
+			HttpContext.Session.Clear();
+			return RedirectToAction("Index", "Home");
 		}
 	}
 }

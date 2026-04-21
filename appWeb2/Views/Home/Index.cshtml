@@ -1,6 +1,10 @@
-﻿@model IEnumerable<appWeb2.Models.VideoJuegos>
+﻿@using Microsoft.AspNetCore.Http
+
+@model IEnumerable<appWeb2.Models.VideoJuegos>
+
 @{
     ViewData["Title"] = "Videojuegos";
+    var usuario = Context.Session.GetString("usuario");
 }
 
 <div class="container mt-5">
@@ -84,7 +88,16 @@
                         </h4>
 
                         <!-- BOTÓN COMPRAR -->
-                        <div id="paypal-button-@juego.Id" class="mt-3"></div>
+                        @if (!string.IsNullOrEmpty(usuario))
+                        {
+                            <div id="paypal-button-@juego.Id" class="mt-3"></div>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-warning mt-3">
+                                Inicia sesión para comprar
+                            </a>
+                        }
 
                         <!-- CATEGORÍA -->
                         <div class="d-flex align-items-center mt-auto">
@@ -98,46 +111,49 @@
            
         }
     </div>
-    <script src="https://www.paypal.com/sdk/js?client-id=ASRsvCdHo6DNCms8C7aQtkBX482MglOrrjXBQOjH6Nlp6ukvJ4MVAWW6QNaxPo1j7fjovikerMO_9_O5&currency=USD"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        @foreach (var item in Model)
-        {
-            <text>
-                paypal.Buttons({
-                createOrder: async function () {
-                const response = await fetch('/PayPal/CreateOrder', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'amount=@item.precio'
-                });
+    @if (!string.IsNullOrEmpty(usuario))
+    {
+        <script src="https://www.paypal.com/sdk/js?client-id=ASRsvCdHo6DNCms8C7aQtkBX482MglOrrjXBQOjH6Nlp6ukvJ4MVAWW6QNaxPo1j7fjovikerMO_9_O5&currency=USD"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            @foreach (var item in Model)
+            {
+                <text>
+                    paypal.Buttons({
+                    createOrder: async function () {
+                    const response = await fetch('/PayPal/CreateOrder', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'amount=@item.precio'
+                    });
 
-                const data = await response.json();
-                return data.id;
-                },
+                    const data = await response.json();
+                    return data.id;
+                    },
 
-                onApprove: async function (data) {
-                const response = await fetch('/PayPal/CaptureOrder', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'orderId=' + data.orderID + '&videojuegoId=@item.Id&cantidad=1&total=@item.precio'
-                });
+                    onApprove: async function (data) {
+                    const response = await fetch('/PayPal/CaptureOrder', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'orderId=' + data.orderID + '&videojuegoId=@item.Id&cantidad=1&total=@item.precio'
+                    });
 
-                const result = await response.text();
-                console.log(result);
-                alert('Pago completado: @item.titulo');
-                },
+                    const result = await response.text();
+                    console.log(result);
+                    alert('Pago completado: @item.titulo');
+                    },
 
-                onError: function (err) {
-                console.error(err);
-                alert('Error con PayPal');
-                }
-                }).render('#paypal-button-@item.Id');
-            </text>
-        }
-        });
-    </script>
+                    onError: function (err) {
+                    console.error(err);
+                    alert('Error con PayPal');
+                    }
+                    }).render('#paypal-button-@item.Id');
+                </text>
+            }
+            });
+        </script>
+    }

@@ -34,6 +34,12 @@ namespace appWeb2.Controllers
 		public async Task<IActionResult> CreateOrder(decimal amount)
 		{
 			var orderId = await _payPalService.CreateOrderAsync(amount);
+
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("usuario")))
+			{
+				return Unauthorized("Debes iniciar sesión para comprar.");
+			}
+
 			return Json(new { id = orderId });
 		}
 
@@ -48,11 +54,23 @@ namespace appWeb2.Controllers
 		{
 			var result = await _payPalService.CaptureOrderAsync(orderId);
 
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("usuario")))
+			{
+				return Unauthorized("Debes iniciar sesión para comprar.");
+			}
+
 			// 1. Crear compra
+			var usuarioId = HttpContext.Session.GetInt32("usuarioId");
+
+			if (usuarioId == null)
+			{
+				return Unauthorized("Debes iniciar sesión");
+			}
+
 			var compra = new Compra
 			{
 				FechaCompra = DateTime.Now,
-				UsuarioId = 1
+				UsuarioId = usuarioId.Value
 			};
 
 			_context.Compras.Add(compra);
