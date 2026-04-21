@@ -1,4 +1,4 @@
-﻿@model IEnumerable<string>
+﻿@model IEnumerable<appWeb2.Models.Categoria>
 
 @{
     ViewData["Title"] = "Categorías";
@@ -11,10 +11,10 @@
         @foreach (var categoria in Model)
         {
             <div class="col-md-4 col-lg-3">
-                <a asp-action="PorCategoria" asp-route-categoria="@categoria" class="text-decoration-none">
+                <a asp-action="PorCategoria" asp-route-id="@categoria.idcategoria" class="text-decoration-none">
                     <div class="card shadow-sm text-center p-4 h-100 category-card">
                         <i class="fa-solid fa-gamepad fa-2x text-warning mb-3"></i>
-                        <h5 class="fw-bold text-dark">@categoria</h5>
+                        <h5 class="fw-bold text-dark">@categoria.categoria</h5>
                         <p class="text-muted mb-0">Ver juegos de esta categoría</p>
                     </div>
                 </a>

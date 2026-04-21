@@ -20,9 +20,11 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="categoria" class="form-label" style="color: #f5f5dc;">Categoría</label>
-        <input asp-for="categoria" class="form-control" />
-        <span asp-validation-for="categoria" class="text-danger"></span>
+        <label asp-for="idcategoria" class="form-label" style="color: #f5f5dc;">Categoría</label>
+        <select asp-for="idcategoria" class="form-control" asp-items="ViewBag.Categorias">
+            <option value="">Seleccione una categoría</option>
+        </select>
+        <span asp-validation-for="idcategoria" class="text-danger"></span>
     </div>
 
     <div class="mb-3">

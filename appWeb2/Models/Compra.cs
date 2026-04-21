@@ -17,9 +17,9 @@ namespace appWeb2.Models
 
 		public Usuario Usuario { get; set; }
 
-		public int VideoJuegosId { get; set; }
-		[ForeignKey("VideoJuegosId")]
+		//public int VideoJuegosId { get; set; }
+		//[ForeignKey("VideoJuegosId")]
 
-		public VideoJuegos VideoJuegos { get; set; }
+		//public VideoJuegos VideoJuegos { get; set; }
 	}
 }

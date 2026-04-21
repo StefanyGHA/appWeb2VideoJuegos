@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace appWeb2.Models
 {
@@ -15,8 +16,10 @@ namespace appWeb2.Models
 		public decimal precio { get; set; }
 		[Required]
 
-		public string categoria { get; set; }
-		[Required]
+		public int idcategoria { get; set; }   
+
+		[ForeignKey("idcategoria")]
+		public Categoria? Categoria { get; set; }  
 
 		public string descripcion { get; set; }
 
@@ -30,7 +33,6 @@ namespace appWeb2.Models
 
 		public int EdadPermitida { get; set; }
 
-		//public ICollection<Compra> Compras { get; set; }
 
 	}
 }

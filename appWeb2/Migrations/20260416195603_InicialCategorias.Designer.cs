@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using appWeb2.Data;
 
@@ -11,9 +12,11 @@ using appWeb2.Data;
 namespace appWeb2.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260416195603_InicialCategorias")]
+    partial class InicialCategorias
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,51 +56,16 @@ namespace appWeb2.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<int>("VideoJuegosId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Compras");
-                });
-
-            modelBuilder.Entity("appWeb2.Models.DetalleCompra", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("VideoJuegosId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("cantidad")
-                        .HasColumnType("int");
-
-                    b.Property<string>("codigoTransaccion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("estadoCompra")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("fechaHoraTransaccion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("idCompra")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("VideoJuegosId");
 
-                    b.HasIndex("idCompra");
-
-                    b.ToTable("detalle_compra");
+                    b.ToTable("Compras");
                 });
 
             modelBuilder.Entity("appWeb2.Models.Usuario", b =>
@@ -186,24 +154,13 @@ namespace appWeb2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("appWeb2.Models.DetalleCompra", b =>
-                {
                     b.HasOne("appWeb2.Models.VideoJuegos", "VideoJuegos")
                         .WithMany()
                         .HasForeignKey("VideoJuegosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("appWeb2.Models.Compra", "Compra")
-                        .WithMany()
-                        .HasForeignKey("idCompra")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Compra");
+                    b.Navigation("Usuario");
 
                     b.Navigation("VideoJuegos");
                 });
