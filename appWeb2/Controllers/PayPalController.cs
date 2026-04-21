@@ -25,5 +25,38 @@ namespace appWeb2.Controllers
 
 			return Content($"Token obtenido correctamente: {preview}...");
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> CreateOrder(decimal amount)
+		{
+			var orderId = await _payPalService.CreateOrderAsync(amount);
+			return Json(new { id = orderId });
+		}
+
+		public async Task<IActionResult> TestOrder()
+		{
+			var orderId = await _payPalService.CreateOrderAsync(10.00m);
+			return Content($"Orden creada: {orderId}");
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> CaptureOrder(string orderId)
+		{
+			var result = await _payPalService.CaptureOrderAsync(orderId);
+			return Content(result, "application/json");
+		}
+
+		public async Task<IActionResult> TestCapture()
+		{
+			var orderId = await _payPalService.CreateOrderAsync(10.00m);
+
+			if (string.IsNullOrWhiteSpace(orderId))
+			{
+				return Content("No se pudo crear la orden.");
+			}
+
+			var result = await _payPalService.CaptureOrderAsync(orderId);
+			return Content(result, "application/json");
+		}
 	}
 }

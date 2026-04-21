@@ -49,6 +49,74 @@ namespace appWeb2.Services
 
 			return result?.AccessToken;
 		}
+
+		public async Task<string?> CreateOrderAsync(decimal amount)
+		{
+			var accessToken = await GetAccessTokenAsync();
+
+			_httpClient.DefaultRequestHeaders.Authorization =
+				new AuthenticationHeaderValue("Bearer", accessToken);
+
+			var order = new
+			{
+				intent = "CAPTURE",
+				purchase_units = new[]
+				{
+			new
+			{
+				amount = new
+				{
+					currency_code = "USD",
+					value = amount.ToString("F2")
+				}
+			}
+		}
+			};
+
+			var content = new StringContent(
+				JsonSerializer.Serialize(order),
+				Encoding.UTF8,
+				"application/json"
+			);
+
+			var response = await _httpClient.PostAsync(
+				$"{_payPalSettings.BaseUrl}/v2/checkout/orders",
+				content
+			);
+
+			var json = await response.Content.ReadAsStringAsync();
+
+			if (!response.IsSuccessStatusCode)
+			{
+				throw new Exception($"Error creando orden: {json}");
+			}
+
+			var result = JsonSerializer.Deserialize<JsonElement>(json);
+
+			return result.GetProperty("id").GetString();
+		}
+
+		public async Task<string> CaptureOrderAsync(string orderId)
+		{
+			var accessToken = await GetAccessTokenAsync();
+
+			_httpClient.DefaultRequestHeaders.Authorization =
+				new AuthenticationHeaderValue("Bearer", accessToken);
+
+			var response = await _httpClient.PostAsync(
+				$"{_payPalSettings.BaseUrl}/v2/checkout/orders/{orderId}/capture",
+				new StringContent("", Encoding.UTF8, "application/json")
+			);
+
+			var json = await response.Content.ReadAsStringAsync();
+
+			if (!response.IsSuccessStatusCode)
+			{
+				throw new Exception($"Error capturando orden: {json}");
+			}
+
+			return json;
+		}
 	}
 	
 public class PayPalTokenResponse
@@ -62,4 +130,6 @@ public class PayPalTokenResponse
 		[JsonPropertyName("expires_in")]
 		public int ExpiresIn { get; set; }
 	}
+
+
 }
