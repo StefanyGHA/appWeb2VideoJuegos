@@ -1,4 +1,9 @@
-﻿@model IEnumerable<appWeb2.Models.VideoJuegos>
+﻿@using Microsoft.AspNetCore.Http
+
+@{
+    var usuario = Context.Session.GetString("usuario");
+}
+@model IEnumerable<appWeb2.Models.VideoJuegos>
 
 @{
     ViewData["Title"] = "Nuevos Juegos";
@@ -29,6 +34,16 @@
                         <h5 class="card-title fw-bold">@juego.titulo</h5>
 
                         <h4 class="price mt-2">$@juego.precio</h4>
+                        @if (!string.IsNullOrEmpty(usuario))
+                        {
+                            <div id="paypal-button-@juego.Id" class="mt-3"></div>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-warning mt-3">
+                                Inicia sesión para comprar
+                            </a>
+                        }
 
                         <div class="d-flex align-items-center mt-auto mb-2">
                             <i class="fa-solid fa-gamepad me-2 text-warning"></i>
@@ -44,3 +59,51 @@
         }
     </div>
 </div>
+@if (!string.IsNullOrEmpty(usuario))
+{
+    <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&currency=USD"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+        @foreach (var item in Model)
+        {
+            <text>
+                paypal.Buttons({
+                createOrder: async function () {
+                const response = await fetch('/PayPal/CreateOrder', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'amount=@item.precio'
+                });
+
+                const data = await response.json();
+                return data.id;
+                },
+
+                onApprove: async function (data) {
+                const response = await fetch('/PayPal/CaptureOrder', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'orderId=' + data.orderID + '&videojuegoId=@item.Id&cantidad=1&total=@item.precio'
+                });
+
+                alert('Pago completado: @item.titulo');
+                },
+
+                onError: function (err) {
+                console.error(err);
+                alert('Error con PayPal');
+                }
+
+                }).render('#paypal-button-@item.Id');
+            </text>
+        }
+
+        });
+    </script>
+}
