@@ -1,0 +1,216 @@
+﻿@model List<appWeb2.Models.DetalleCompra>
+
+@{
+    Layout = null;
+    var totalGastado = Model.Sum(x => x.total);
+    var totalUnidades = Model.Sum(x => x.cantidad);
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <style>
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #222;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .encabezado {
+            width: 100%;
+            border-bottom: 4px solid #004b70;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+
+        .logo-caja {
+            width: 70px;
+            height: 70px;
+            background: #004b70;
+            color: #ffc107;
+            font-size: 34px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 70px;
+            border-radius: 8px;
+            float: left;
+            margin-right: 15px;
+        }
+
+        .empresa {
+            font-size: 30px;
+            font-weight: bold;
+            color: #ffc107;
+        }
+
+        .empresa span {
+            color: #004b70;
+        }
+
+        .titulo {
+            font-size: 18px;
+            color: #004b70;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .fecha {
+            font-size: 12px;
+            color: #555;
+            margin-top: 4px;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .filtro {
+            background: #eef5fa;
+            border-left: 5px solid #004b70;
+            padding: 10px;
+            margin-bottom: 18px;
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th {
+            background: #004b70;
+            color: white;
+            border: 1px solid #999;
+            padding: 8px 5px;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        td {
+            border: 1px solid #bbb;
+            padding: 8px 5px;
+            font-size: 11px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+        }
+
+        .col-videojuego {
+            width: 28%;
+        }
+
+        .col-cantidad {
+            width: 9%;
+        }
+
+        .col-total {
+            width: 11%;
+        }
+
+        .col-estado {
+            width: 13%;
+        }
+
+        .col-fecha {
+            width: 17%;
+        }
+
+        .col-codigo {
+            width: 22%;
+        }
+
+        .nombre {
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .estado {
+            color: #0b7a34;
+            font-weight: bold;
+        }
+
+        .total-box {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            color: #004b70;
+        }
+
+        .footer {
+            margin-top: 30px;
+            border-top: 1px solid #ccc;
+            padding-top: 12px;
+            text-align: center;
+            font-size: 11px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empresa">
+            <td style="width: 140px; text-align: left; vertical-align: middle;">
+                <img src="@($"{Context.Request.Scheme}://{Context.Request.Host}/img/logoamarillo.png")"
+                     style="width: 120px;" />
+            </td><span></span>
+        </div>
+
+        <div class="titulo">Reporte de videojuegos comprados</div>
+        <div class="fecha">
+            Fecha de generación: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+        </div>
+
+        <div class="clear"></div>
+    </div>
+
+    <div class="filtro">
+        <strong>Reporte filtrado:</strong> compras realizadas por el cliente.<br />
+        <strong>Total de productos:</strong> @Model.Count |
+        <strong>Total de unidades:</strong> @totalUnidades
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="col-videojuego">VIDEOJUEGO</th>
+                <th class="col-cantidad">CANTIDAD</th>
+                <th class="col-total">TOTAL</th>
+                <th class="col-estado">ESTADO</th>
+                <th class="col-fecha">FECHA</th>
+                <th class="col-codigo">CÓDIGO TRANSACCIÓN</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="nombre">@item.VideoJuegos.titulo</td>
+                    <td>@item.cantidad</td>
+                    <td>$@item.total.ToString("N2")</td>
+                    <td class="estado">@item.estadoCompra</td>
+                    <td>@item.fechaHoraTransaccion.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.codigoTransaccion</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="total-box">
+        Total gastado: $@totalGastado.ToString("N2")
+    </div>
+
+    <div class="footer">
+        GameStore - Reporte generado automáticamente<br />
+        Gracias por tu compra. ¡Disfruta tus videojuegos!<br />
+        © @DateTime.Now.Year - GameStore | Todos los derechos reservados
+    </div>
+
+</body>
+</html>

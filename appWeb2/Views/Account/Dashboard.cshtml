@@ -17,7 +17,7 @@
 
     <style>
         body {
-        background-color: #f5f7fb;
+        background-color: #6A5ACD;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
         background: var(--highcharts-background-color);
         color: var(--highcharts-neutral-color-100);
@@ -37,7 +37,7 @@
         .highcharts-data-table table {
         font-family: Verdana, sans-serif;
         border-collapse: collapse;
-        border: 1px solid var(--highcharts-neutral-color-10, #e6e6e6);
+        border: 1px solid var(--highcharts-neutral-color-10, #6A5ACD);
         margin: 10px auto;
         text-align: center;
         width: 100%;
@@ -76,7 +76,7 @@
             }
 
             .navbar-custom {
-                background: linear-gradient(90deg, #1e3c72, #2a5298);
+        background: linear-gradient(90deg, #6A5ACD, #f8c8dc);
             }
 
             .navbar-brand {
@@ -121,15 +121,25 @@
 <body>
 
    
-    <nav class="navbar navbar-expand-lg navbar-custom px-4">
-        <a class="navbar-brand" href="#">Administración de sistema</a>
-        <a asp-controller="Account" asp-action="DetalleVentas" class="btn btn-dark">
-            Ver Detalle de compras
-        </a>
-        <a asp-controller="VideoJuegos" asp-action="DetalleVentas" class="btn btn-dark">
-            Ver Detalle de compras
+    <nav class="navbar navbar-expand-lg navbar-custom px-4 d-flex align-items-center">
+
+        <!-- IZQUIERDA -->
+        <a class="navbar-brand me-4" href="#">
+            Administración de sistema
         </a>
 
+        <!-- CENTRO (botones) -->
+        <div class="d-flex gap-3">
+            <a asp-controller="Account" asp-action="DetalleVentas" class="btn btn-light">
+                Ver Detalle de compras
+            </a>
+
+            <a asp-controller="Home" asp-action="Index" class="btn btn-light">
+                Videojuegos
+            </a>
+        </div>
+
+        <!-- DERECHA -->
         <div class="ms-auto d-flex align-items-center gap-3">
             <span class="user-info">
                 👤 @usuario
@@ -139,6 +149,7 @@
                 Cerrar Sesión
             </a>
         </div>
+
     </nav>
     <div class="dashboard-container">
 
@@ -151,24 +162,29 @@
         </div>
         <div class="row g-4">
             <div class="col-12">
-                <select id="filtroCategoria" class="form-select">
-                    <option value="">Todas las categorias</option>
-                    @foreach (var cat in ViewBag.Categorias)
-                    {
-                        <option value="@cat">@cat</option>
-                    }
-                </select>
+               
             </div>
-
             <div class="col-md-6">
                 <div class="bg-white p-3 rounded shadow-sm">
+
+                    
+                    <label class="fw-bold mb-2">Filtrar por categoría</label>
+                    <select id="filtroCategoria" class="form-select mb-3">
+                        <option value="">Todas las categorias</option>
+                        @foreach (var cat in ViewBag.Categorias)
+                        {
+                            <option value="@cat">@cat</option>
+                        }
+                    </select>
+
                     <div id="containerCategorias" style="height: 400px;"></div>
+
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="bg-white p-3 rounded shadow-sm">
-                    <div id="containerPastel" style="height: 400px;"></div>
+                    <div id="containerPastel" style="height: 485px;"></div>
                 </div>
             </div>
 
@@ -274,31 +290,37 @@
     }
 
     function cargarGraficaLinea() {
-        $.get('/Account/ObtenerVideojuegosPorMes', function (data) {
-            var periodos = data.map(x => x.periodo);
-            var totales = data.map(x => x.total);
+    $.get('/Account/ObtenerVideojuegosPorEdad', function (data) {
 
-            Highcharts.chart('containerLinea', {
-                chart: {
-                    type: 'line'
-                },
-                title: {
-                    text: 'Videojuegos registrados por mes'
-                },
-                xAxis: {
-                    categories: periodos
-                },
-                yAxis: {
-                    title: {
-                        text: 'Cantidad'
-                    }
-                },
-                series: [{
-                    name: 'Registros',
-                    data: totales
-                }]
-            });
-        });
+    var edades = data.map(x => x.edad);
+    var totales = data.map(x => x.total);
+
+    Highcharts.chart('containerLinea', {
+    chart: {
+    type: 'column'
+    },
+    title: {
+    text: 'Videojuegos por clasificación de edad'
+    },
+    xAxis: {
+    categories: edades,
+    title: {
+    text: 'Edad permitida'
+    }
+    },
+    yAxis: {
+    min: 0,
+    allowDecimals: false,
+    title: {
+    text: 'Cantidad'
+    }
+    },
+    series: [{
+    name: 'Videojuegos',
+    data: totales
+    }]
+    });
+    });
     }
 
     $(document).ready(function () {
@@ -311,6 +333,5 @@
             cargarGraficaCategorias($(this).val());
         });
     });
-</script>
 </script>
 </html>

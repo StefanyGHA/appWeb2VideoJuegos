@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace appWeb2.Models
 {
@@ -25,6 +26,13 @@ namespace appWeb2.Models
 
 		public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
+		[ForeignKey("IdRol")]
+
+		public Rol Rol { get; set; }
+
+		public int IdRol {  get; set; }
+
+		public ICollection<Compra> Compra { get; set; }
 
 	}
 }

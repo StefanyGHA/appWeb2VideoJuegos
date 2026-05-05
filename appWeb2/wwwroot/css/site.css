@@ -1,4 +1,4 @@
-/*INICIO*/
+/* INICIO */
 html, body {
     height: 100%;
 }
@@ -6,26 +6,26 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    background-color: #00181d;
+    background-color: #6A5ACD;
 }
 
-
+/* NAVBAR */
 .navbar-custom {
-    background-color: #00416c;
+    background: linear-gradient(90deg, #6A5ACD, #f8c8dc);
 }
 
     .navbar-custom .nav-link {
-        color: #ffffb0;
+        color: white;
         transition: 0.3s;
     }
 
         .navbar-custom .nav-link:hover {
-            color: #ffc950;
+            color: #ff6fa5;
         }
 
-
+/* BOTONES */
 .btn-accent {
-    background-color: #d55829;
+    background-color: #ff6fa5;
     color: white;
     border-radius: 20px;
     padding: 6px 16px;
@@ -33,22 +33,20 @@ body {
 }
 
     .btn-accent:hover {
-        background-color: #ffc950;
-        color: black;
+        background-color: #ff6fa5;
+        color: white;
     }
 
-.navbar-custom .nav-link {
-    font-size: 1.2rem;
-}
-
+/* NAVBAR TEXTO */
 .navbar-brand {
     font-size: 2rem;
+    color: white !important;
 }
 
+/* BANNER */
 .banner {
     background: url('/img/banner.png');
     background-size: cover;
-    background-position: center;
     background-position: center top;
     height: 80vh;
     display: flex;
@@ -57,90 +55,191 @@ body {
     padding: 300px 0;
 }
 
-
+/* TARJETAS */
 .game-card {
     border-radius: 15px;
     overflow: hidden;
-    background-color: #f5f5f5;
+    background-color: white;
     position: relative;
     transition: 0.3s;
 }
 
     .game-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+        box-shadow: 0px 10px 25px rgba(106, 90, 205, 0.4);
     }
-
 
 .game-img {
     height: 220px;
     object-fit: cover;
 }
 
-
+/* BADGE */
 .badge-top {
     position: absolute;
     top: 0;
     left: 0;
-    background: red;
+    background: #FF0000;
     color: white;
     padding: 5px 15px;
     font-weight: bold;
     border-bottom-right-radius: 10px;
 }
 
-
+/* FAVORITO */
 .favorite {
     position: absolute;
     bottom: 10px;
     right: 10px;
     font-size: 22px;
-    color: red;
+    color: #ff6fa5;
     cursor: pointer;
 }
 
-
+/* PRECIO */
 .price {
-    color: #333;
+    color: #6A5ACD;
     font-weight: bold;
 }
 
-
+/* FOOTER */
 .footer-custom {
-    background-color: #00416c;
-    color: #ffffb0;
+    background-color: #B069DB;
+    color: white;
     margin-top: auto;
 }
 
+/* FEATURES */
 .feature-card {
-    background-color: #002a33;
-    color: #ffffb0;
+    background-color: #FFFAF0;
+    color: #333;
     padding: 25px;
     border-radius: 15px;
     transition: 0.3s;
     cursor: pointer;
 }
 
-
     .feature-card i {
         font-size: 40px;
-        color: #ffc950;
+        color: #ffd800;
         margin-bottom: 10px;
     }
 
     .feature-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0px 0px 15px #d55829;
-        background-color: #00416c;
+        box-shadow: 0px 0px 15px #6A5ACD;
+        background-color: #ff6fa5;
+        color: white;
     }
 
+/* CATEGORIAS */
 .category-card {
     border: none;
     border-radius: 15px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.category-card:hover {
+    .category-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+/* NAVBAR ADMIN */
+.navbar-custom {
+    background: linear-gradient(90deg, #6A5ACD, #f8c8dc);
+    padding: 12px 0;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.2s ease;
+}
+
+.nav-hover:hover {
+    background: rgba(255, 111, 165, 0.3);
+    color: white !important;
+}
+
+.nav-user {
+    color: white;
+    font-weight: 500;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+/* LOGOUT */
+.btn-logout {
+    background: #ff6fa5;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+    .btn-logout:hover {
+        background: #6A5ACD;
+    }
+
+   /*diseño paginador*/
+
+.pagination .page-link {
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+    /* HOVER (cuando pasas el mouse) */
+    .pagination .page-link:hover {
+        transform: translateY(-4px) scale(1.05);
+        background-color: #FF1493 !important;
+        border-color: #ff6fa5 !important;
+        box-shadow: 0 6px 15px rgba(255, 111, 165, 0.5);
+    }
+
+    /* CLICK (efecto presionado) */
+    .pagination .page-link:active {
+        transform: scale(0.95);
+    }
+
+/* ACTIVO */
+.pagination .active .page-link {
+    animation: glow 1.5s infinite alternate;
+}
+
+/* ANIMACION GLOW */
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px #ff6fa5;
+    }
+
+    to {
+        box-shadow: 0 0 15px #ff6fa5;
+    }
+}
+
+
+.pagination .page-link {
+    position: relative;
+    overflow: hidden;
+}
+
+    /* EFECTO ONDA */
+    .pagination .page-link::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.2);
+        top: 0;
+        left: -100%;
+        transition: 0.4s;
+    }
+
+    .pagination .page-link:hover::after {
+        left: 100%;
     }

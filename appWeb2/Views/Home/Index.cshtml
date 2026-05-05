@@ -55,7 +55,7 @@
     </div>
 
 
-    <h2 class="text-center fw-bold mb-4" style="color: #FFD700;"> Videojuegos Disponibles</h2>
+    <h2 class="text-center fw-bold mb-4" style="color: #6A5ACD;"> Videojuegos Disponibles</h2>
     <div class="row g-4">
         @foreach (var juego in Model)
         {
@@ -111,6 +111,56 @@
            
         }
     </div>
+    @{
+        int paginaActual = ViewBag.PaginaActual ?? 1;
+        int totalPaginas = ViewBag.TotalPaginas ?? 1;
+    }
+
+    @if (totalPaginas > 1)
+    {
+        <nav class="mt-5">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item @(paginaActual == 1 ? "disabled" : "")">
+                    <a class="page-link"
+                           style="background-color: #FFD700; color:white; border-color:#6A5ACD;"
+                           asp-controller="Home"
+                           asp-action="Index"
+                           asp-route-pagina="@(paginaActual - 1)">
+                        Anterior
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= totalPaginas; i++)
+                {
+                    <li class="page-item @(i == paginaActual ? "active" : "")">
+                        <a class="page-link"
+                               style="@(i == paginaActual
+                                                       ? "background-color:#ff6fa5; color:white; border-color:#ff6fa5;"
+                                                       : "background-color:#6A5ACD; color:white; border-color:#6A5ACD;")"
+                   asp-controller="Home"
+                   asp-action="Index"
+                   asp-route-pagina="@i">
+
+                @i
+
+            </a>
+                    </li>
+                }
+
+                <li class="page-item @(paginaActual == totalPaginas ? "disabled" : "")">
+        <a class="page-link"
+               style="background-color: #FFD700; color:white; border-color:#6A5ACD;"
+               asp-controller="Home"
+               asp-action="Index"
+               asp-route-pagina="@(paginaActual + 1)">
+            Siguiente
+        </a>
+                </li>
+
+            </ul>
+        </nav>
+    }
     @if (!string.IsNullOrEmpty(usuario))
     {
         <script src="https://www.paypal.com/sdk/js?client-id=ASRsvCdHo6DNCms8C7aQtkBX482MglOrrjXBQOjH6Nlp6ukvJ4MVAWW6QNaxPo1j7fjovikerMO_9_O5&currency=USD"></script>

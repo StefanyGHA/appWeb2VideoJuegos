@@ -1,0 +1,41 @@
+﻿@model appWeb2.Models.Usuario
+
+<h2 style="color: #FFD700;">Gestionar mi cuenta</h2>
+
+@if (ViewBag.Mensaje != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Mensaje
+    </div>
+}
+
+<form asp-action="MiCuenta" method="post">
+
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="mb-3" style="color: #f5f5dc">
+        <label>Nombre de Usuario</label>
+        <input name="nombre" value="@Model.nombre" class="form-control" />
+    </div>
+
+    <hr />
+
+    <h4 style="color: #f5f5dc">Cambiar contraseña</h4>
+
+    <div class="mb-3" style="color: #f5f5dc">
+        <label>Contraseña actual</label>
+        <input name="passwordActual" type="password" class="form-control" />
+    </div>
+
+    <div class="mb-3" style="color: #f5f5dc">
+        <label>Nueva contraseña</label>
+        <input name="nuevapassword" type="password" class="form-control" />
+    </div>
+
+    <div class="mb-3" style="color: #f5f5dc">
+        <label>Confirmar contraseña</label>
+        <input name="confirmarpassword" type="password" class="form-control" />
+    </div>
+
+    <button class="btn btn-warning">Guardar cambios</button>
+</form>

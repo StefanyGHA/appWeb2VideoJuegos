@@ -10,6 +10,8 @@ namespace appWeb2.Models
 	
 		public int UsuarioId { get; set; }
 		public int VideoJuegosId { get;set; }
+		public string NombreCliente { get; set; }
+		public string NombreVideojuego { get; set; }
 		public string titulo { get; set; }
 		public int cantidad {  get; set; }
 		public decimal total { get; set; }

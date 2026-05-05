@@ -4,10 +4,12 @@ using appWeb2.Data;
 using appWeb2.Models;
 using Microsoft.EntityFrameworkCore;
 using appWeb2.Services;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<PayPalSettings>(
 	builder.Configuration.GetSection("PayPal"));
+//Permite leer el appsettings.json
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -35,8 +37,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseSession();
-
+app.UseSession(); //
+app.UseAuthorization();
+RotativaConfiguration.Setup(@"C:\Program Files\wkhtmltopdf\bin", "");
 app.MapStaticAssets();
 
 app.MapControllerRoute(

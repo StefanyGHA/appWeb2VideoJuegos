@@ -18,11 +18,15 @@
 <body class="bg-dark-custom">
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-custom shadow">
-            <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
+            <div class="container-fluid px-4">
 
-                <a class="navbar-brand fw-bold text-warning" asp-controller="Home" asp-action="Index">
-                    GameStore
+                <a class="navbar-brand fw-bold text-warning fs-4" asp-controller="Home" asp-action="Index">
+                    <td style="width: 140px; text-align: left; vertical-align: middle;">
+                        <img src="@($"{Context.Request.Scheme}://{Context.Request.Host}/img/logoamarillo.png")"
+                             style="width: 150px;" />
+                    </td>
+        
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavbar">
@@ -31,32 +35,68 @@
 
                 <div class="collapse navbar-collapse" id="menuNavbar">
 
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+                    <!-- MENÚ -->
+                    <ul class="navbar-nav me-auto gap-2">
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Contacts">Contactos</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="VideoJuegos" asp-action="Index">Lo Nuevo</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="Dashboard">Dashboard</a>
-                        </li>
-                    </ul>
-
-                    <ul class="navbar-nav ms-auto">
                         @if (!string.IsNullOrEmpty(usuario))
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-white">Hola, @usuario</span>
+                                <a class="nav-link nav-hover" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="btn btn-accent ms-2" asp-controller="Account" asp-action="Logout">
+                                <a class="nav-link nav-hover" asp-controller="Account" asp-action="MisCompras">
+                                    Mis Compras
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link nav-hover" asp-controller="Account" asp-action="MiCuenta">
+                                    Mi Cuenta
+                                </a>
+                            </li>
+                        }
+
+                        @if (Context.Session.GetInt32("Idrol") == 1)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link nav-hover" asp-controller="VideoJuegos" asp-action="Index">
+                                    Videojuegos
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link nav-hover" asp-controller="Account" asp-action="Dashboard">
+                                    Dashboard
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link nav-hover" asp-controller="Account" asp-action="DetalleVentas">
+                                    Ventas
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link nav-hover" asp-controller="Account" asp-action="VerUsuarios">
+                                    Usuarios
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- USUARIO -->
+                    <ul class="navbar-nav ms-auto align-items-center gap-3">
+                        @if (!string.IsNullOrEmpty(usuario))
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-white" >
+                                    👤Hola, @usuario
+                                </span>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="btn btn-logout" asp-controller="Account" asp-action="Logout">
                                     Cerrar sesión
                                 </a>
                             </li>
@@ -64,13 +104,13 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Account" asp-action="Login">
-                                    Iniciar Sesión
+                                <a class="btn btn-accent" asp-controller="Account" asp-action="Login">
+                                    Inicia sesión
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="btn btn-accent ms-2" asp-controller="Account" asp-action="Register">
+                                <a class="btn btn-accent" asp-controller="Account" asp-action="Register">
                                     Registrarse
                                 </a>
                             </li>
@@ -79,6 +119,7 @@
 
                 </div>
             </div>
+            <style></style>
         </nav>
     </header>
 

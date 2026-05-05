@@ -1,4 +1,5 @@
 ﻿using appWeb2.Data;
+using appWeb2.Filtros;
 using appWeb2.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,14 +17,14 @@ namespace appWeb2.Controllers
 			_context = context;
 		}
 
-		public async Task<IActionResult> Index()
-		{
-			var juegos = await _context.VideoJuegos
-				.Include(v => v.Categoria)
-				.ToListAsync();
+		//public async Task<IActionResult> Index()
+		//{
+		//	var juegos = await _context.VideoJuegos
+		//		.Include(v => v.Categoria)
+		//		.ToListAsync();
 
-			return View(juegos);
-		}
+		//	return View(juegos);
+		//}
 
 		public IActionResult Create()
 		{
@@ -204,6 +205,52 @@ namespace appWeb2.Controllers
 			}
 
 			return RedirectToAction(nameof(Index));
+		}
+
+		public async Task<IActionResult> Index(int pagina = 1)
+		{
+			int cantidad = 10;
+
+			var totalRegistros = await _context.VideoJuegos.CountAsync();
+
+			var juegos = await _context.VideoJuegos
+				.Include(v => v.Categoria)
+				.OrderBy(v => v.titulo)
+				.Skip((pagina - 1) * cantidad)
+				.Take(cantidad)
+				.ToListAsync();
+
+			ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalRegistros / cantidad);
+			ViewBag.PaginaActual = pagina;
+
+			return View(juegos);
+		}
+
+		[SessionAuthorize]
+		public async Task<IActionResult> MisCompras(DateTime? desde, DateTime? hasta, string videojuego)
+		{
+			var usuarioId = HttpContext.Session.GetInt32("usuarioId");
+
+			var query = _context.detalle_compra
+				.Include(d => d.Compra)
+				.Include(d => d.VideoJuegos)
+				.Where(d => d.Compra.UsuarioId == usuarioId)
+				.AsQueryable();
+
+			if (desde.HasValue)
+				query = query.Where(d => d.fechaHoraTransaccion >= desde.Value);
+
+			if (hasta.HasValue)
+				query = query.Where(d => d.fechaHoraTransaccion <= hasta.Value);
+
+			if (!string.IsNullOrEmpty(videojuego))
+				query = query.Where(d => d.VideoJuegos.titulo.Contains(videojuego));
+
+			var compras = await query
+				.OrderByDescending(d => d.fechaHoraTransaccion)
+				.ToListAsync();
+
+			return View(compras);
 		}
 	}
 }

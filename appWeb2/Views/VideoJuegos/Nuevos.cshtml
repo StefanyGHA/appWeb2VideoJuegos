@@ -61,11 +61,9 @@
 </div>
 @if (!string.IsNullOrEmpty(usuario))
 {
-    <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&currency=USD"></script>
-
+    <script src="https://www.paypal.com/sdk/js?client-id=ASRsvCdHo6DNCms8C7aQtkBX482MglOrrjXBQOjH6Nlp6ukvJ4MVAWW6QNaxPo1j7fjovikerMO_9_O5&currency=USD"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-
         @foreach (var item in Model)
         {
             <text>
@@ -92,6 +90,8 @@
                 body: 'orderId=' + data.orderID + '&videojuegoId=@item.Id&cantidad=1&total=@item.precio'
                 });
 
+                const result = await response.text();
+                console.log(result);
                 alert('Pago completado: @item.titulo');
                 },
 
@@ -99,11 +99,9 @@
                 console.error(err);
                 alert('Error con PayPal');
                 }
-
                 }).render('#paypal-button-@item.Id');
             </text>
         }
-
         });
     </script>
 }

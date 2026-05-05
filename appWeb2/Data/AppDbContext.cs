@@ -17,6 +17,7 @@ namespace appWeb2.Data
 		public DbSet<Categoria> categoria { get; set; }
 
 		public DbSet<DetalleCompra>detalle_compra { get; set; }
+		public DbSet<Rol> Rol { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

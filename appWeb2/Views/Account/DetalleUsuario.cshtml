@@ -1,0 +1,36 @@
+﻿@model appWeb2.Models.Usuario
+
+@{
+    ViewData["Title"] = "Detalle Usuario";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 bg-dark text-white">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="mb-0">Detalle del Usuario</h3>
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+
+                <dt class="col-sm-3">Nombre</dt>
+                <dd class="col-sm-9">@Model.nombre</dd>
+
+                <dt class="col-sm-3">Correo</dt>
+                <dd class="col-sm-9">@Model.correo</dd>
+
+                <dt class="col-sm-3">Rol</dt>
+                <dd class="col-sm-9">@Model.Rol?.rol</dd>
+
+                <dt class="col-sm-3">Fecha de Registro</dt>
+                <dd class="col-sm-9">@Model.FechaRegistro.ToString("dd/MM/yyyy")</dd>
+            </dl>
+
+            <a asp-action="VerUsuarios" class="btn btn-secondary">
+                Volver
+            </a>
+        </div>
+    </div>
+</div>

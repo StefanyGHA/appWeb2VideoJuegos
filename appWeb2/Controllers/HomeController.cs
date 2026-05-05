@@ -17,9 +17,22 @@ namespace appWeb2.Controllers
 			_context = context; 
 		}
 
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(int pagina = 1)
 		{
-			var juegos = await _context.VideoJuegos.ToListAsync();
+			int cantidad = 10;
+
+			var totalRegistros = await _context.VideoJuegos.CountAsync();
+
+			var juegos = await _context.VideoJuegos
+				.Include(v => v.Categoria)
+				.OrderBy(v => v.titulo)
+				.Skip((pagina - 1) * cantidad)
+				.Take(cantidad)
+				.ToListAsync();
+
+			ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalRegistros / cantidad);
+			ViewBag.PaginaActual = pagina;
+
 			return View(juegos);
 		}
 
